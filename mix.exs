@@ -27,6 +27,8 @@ defmodule Mix.Tasks.Compile.StemexNif do
   def run(_) do
     File.mkdir "priv"
     System.cmd "cc", cc_args++["-o","priv/Elixir.Stemex_nif.so"]++Path.wildcard("c_src/*/*.c"), into: IO.stream(:stdio, :line)
+    Mix.Project.build_structure
+    :ok
   end
 
   defp cc_args do
@@ -47,7 +49,7 @@ defmodule Stemex.Mixfile do
 
   def project do
     [app: :stemex,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.0",
      compilers: compilers(Mix.env),
      package: [
