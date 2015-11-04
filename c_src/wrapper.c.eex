@@ -1,0 +1,32 @@
+#include "../runtime/api.h"
+#include "erl_nif.h"
+#include <string.h>
+<%= for stemmer<-stemmers do %>
+#include "<%= stemmer %>.h"
+<% end %>
+
+<%= for stemmer<-stemmers do %>
+static ERL_NIF_TERM stem_<%= stemmer %>_nif(ErlNifEnv* erl_env, int argc, const ERL_NIF_TERM argv[]){
+    struct SN_env * env;
+    ErlNifBinary in_binary;
+    ErlNifBinary final_binary;
+    if (!enif_inspect_binary(erl_env, argv[0], &in_binary)) {
+        return enif_make_badarg(erl_env);
+    }
+    env = <%= stemmer %>_create_env();
+    SN_set_current(env,in_binary.size,in_binary.data);
+    <%= stemmer %>_stem(env);
+    enif_alloc_binary(env->l,&final_binary);
+    memcpy(final_binary.data,env->p,env->l);
+    <%= stemmer %>_close_env(env);
+    return enif_make_binary(erl_env,&final_binary);
+}
+<% end %>
+
+static ErlNifFunc nif_funcs[] = {
+<%= for stemmer<-stemmers do %>
+  {"<%= stemmer %>", 1, stem_<%= stemmer %>_nif},
+<% end %>
+};
+
+ERL_NIF_INIT(Elixir.Stemex,nif_funcs, NULL, NULL, NULL, NULL)
