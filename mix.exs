@@ -25,6 +25,7 @@ end
 defmodule Mix.Tasks.Compile.StemexNif do
   @shortdoc "Compiles stemmer nif .so library"
   def run(_) do
+    File.mkdir "priv"
     System.cmd "cc", cc_args++["-o","priv/Elixir.Stemex_nif.so"]++Path.wildcard("c_src/*/*.c"), into: IO.stream(:stdio, :line)
   end
 
@@ -50,6 +51,7 @@ defmodule Stemex.Mixfile do
      elixir: "~> 1.0",
      compilers: compilers(Mix.env),
      package: [
+       files: ["lib", "c_src", "algorithms", "mix.exs", "README.md", "LICENSE"],
        maintainers: ["Arnaud Wetzel"],
        licenses: ["MIT"],
        links: %{
