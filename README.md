@@ -1,4 +1,4 @@
-# Stemex [![Build Status](https://api.travis-ci.org/awetzel/stemex.svg)](https://travis-ci.org/awetzel/stemex)
+# Stemex [![Build Status](https://api.travis-ci.org/kbrw/stemex.svg)](https://travis-ci.org/kbrw/stemex)
 
 Stemex is a NIF wrapper above the snowball language (http://snowball.tartarus.org/index.php).
 
