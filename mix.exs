@@ -26,7 +26,7 @@ defmodule Mix.Tasks.Compile.StemexNif do
   @shortdoc "Compiles stemmer nif .so library"
   def run(_) do
     File.mkdir "priv"
-    System.cmd "cc", cc_args++["-o","priv/Elixir.Stemex_nif.so"]++Path.wildcard("c_src/*/*.c"), into: IO.stream(:stdio, :line)
+    System.cmd "cc", cc_args()++["-o","priv/Elixir.Stemex_nif.so"]++Path.wildcard("c_src/*/*.c"), into: IO.stream(:stdio, :line)
     Mix.Project.build_structure
     :ok
   end
@@ -35,9 +35,9 @@ defmodule Mix.Tasks.Compile.StemexNif do
     [i_erts]=Path.wildcard("#{:code.root_dir}/erts*/include")
     i_ei=:code.lib_dir(:erl_interface,:include)
     l_ei=:code.lib_dir(:erl_interface,:lib)
-    args = ["-L#{l_ei}", "-lerl_interface","-lei","-I#{i_ei}","-I#{i_erts}","-Wall","-shared","-fPIC"] #,"-v"]
+    args = ["-L#{l_ei}","-lei","-I#{i_ei}","-I#{i_erts}","-Wall","-shared","-fPIC"] #,"-v"]
     args ++ if {:unix,:darwin}==:os.type, do: ["-undefined","dynamic_lookup","-dynamiclib"], else: []
-  end 
+  end
 end
 
 defmodule Stemex.Mixfile do
