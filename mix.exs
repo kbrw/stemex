@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.Compile.StemexSnowball do
+  use Mix.Task.Compiler
+
   @shortdoc "Compiles stemmers c source, meant to be used only for algorithms development"
   def run(_) do
     File.touch!("lib/stemex.ex") # force recompilation of stemex
@@ -7,6 +9,11 @@ defmodule Mix.Tasks.Compile.StemexSnowball do
       for stemmer<-Mix.Project.get.stemmers do
         opts = ["algorithms/#{stemmer}.sbl","-o","c_src/gen/#{stemmer}","-utf8","-eprefix","#{stemmer}_","-vprefix","#{stemmer}_var","-r","../runtime"]
         System.cmd "snowball", opts, into: IO.stream(:stdio, :line)
+      end
+      |> Enum.any?(fn {_, exit_status} -> exit_status != 0 end)
+      |> case do
+        false -> :ok
+        true -> :error
       end
     else
       Mix.Shell.IO.error("""
@@ -18,11 +25,16 @@ defmodule Mix.Tasks.Compile.StemexSnowball do
           make
           cp snowball ~/bin/snowball
       """)
+      :error
     end
   end
 end
 
 defmodule Mix.Tasks.Compile.StemexNif do
+  use Mix.Task.Compiler
+
+  # TODO : Implement clean/0
+
   @shortdoc "Compiles stemmer nif .so library"
   def run(_) do
     File.mkdir "priv"
