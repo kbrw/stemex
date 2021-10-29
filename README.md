@@ -57,3 +57,9 @@ every test case will be then tested : `Stemex.ALGONAME(first_elem) == second_ele
 The format is compatible with snowball test files and contains by default all
 the tests from the snowball website but you can easily add tests for your own
 snowball algorithm.
+
+# CONTRIBUTING
+
+Hi, and thank you for wanting to contribute.
+Please refer to the centralized informations available at: https://github.com/kbrw#contributing
+
