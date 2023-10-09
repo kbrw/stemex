@@ -69,7 +69,7 @@ defmodule Stemex.Mixfile do
        maintainers: ["Arnaud Wetzel"],
        licenses: ["MIT"],
        links: %{
-         "GitHub" => "https://github.com/awetzel/stemex"
+         "GitHub" => "https://github.com/kbrw/stemex"
        }
      ],
      description: """
