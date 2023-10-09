@@ -18,7 +18,7 @@ defmodule Mix.Tasks.Compile.StemexSnowball do
     else
       Mix.Shell.IO.error("""
         Missing snowball compiler on your path
-        install it for instance doing : 
+        install it for instance doing :
           wget http://snowball.tartarus.org/dist/snowball_code.tgz
           tar xvzf snowball_code.tgz
           cd snowball_code
@@ -44,9 +44,9 @@ defmodule Mix.Tasks.Compile.StemexNif do
   end
 
   defp cc_args do
-    [i_erts]=Path.wildcard("#{:code.root_dir}/erts*/include")
-    i_ei=:code.lib_dir(:erl_interface,:include)
-    l_ei=:code.lib_dir(:erl_interface,:lib)
+    [i_erts] = Path.wildcard("#{:code.root_dir}/erts*/include")
+    [i_ei] = Path.wildcard("#{:code.root_dir}/lib/erl_interface*/include")
+    [l_ei] = Path.wildcard("#{:code.root_dir}/lib/erl_interface*/lib")
     args = ["-L#{l_ei}","-lei","-I#{i_ei}","-I#{i_erts}","-Wall","-shared","-fPIC"] #,"-v"]
     args ++ if {:unix,:darwin}==:os.type, do: ["-undefined","dynamic_lookup","-dynamiclib"], else: []
   end
@@ -73,8 +73,8 @@ defmodule Stemex.Mixfile do
        }
      ],
      description: """
-       Stemex is a NIF wrapper above snowball containing stemmers for : 
-       danish, dutch, english, finnish, french, german, hungarian, italian, kraaij_pohlmann, 
+       Stemex is a NIF wrapper above snowball containing stemmers for :
+       danish, dutch, english, finnish, french, german, hungarian, italian, kraaij_pohlmann,
        lovins, norwegian, portuguese, romanian, russian, spanish, swedish, turkish.
      """,
      deps: []]
@@ -84,6 +84,6 @@ defmodule Stemex.Mixfile do
     [applications: []]
   end
 
-  defp compilers(:dev), do: [:stemex_snowball] ++ compilers(:all) 
+  defp compilers(:dev), do: [:stemex_snowball] ++ compilers(:all)
   defp compilers(_), do: [:stemex_nif] ++ Mix.compilers
 end
