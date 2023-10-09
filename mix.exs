@@ -61,7 +61,7 @@ defmodule Stemex.Mixfile do
 
   def project do
     [app: :stemex,
-     version: "0.2.0",
+     version: "0.2.1",
      elixir: "~> 1.0",
      compilers: compilers(Mix.env),
      package: [
@@ -81,7 +81,11 @@ defmodule Stemex.Mixfile do
   end
 
   def application do
-    [applications: []]
+    [
+      extra_applications: [
+        :erl_interface,
+      ],
+    ]
   end
 
   defp compilers(:dev), do: [:stemex_snowball] ++ compilers(:all) 
